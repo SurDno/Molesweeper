@@ -22,10 +22,10 @@ public class CharacterDigging : MonoBehaviour {
 	void FixedUpdate() {
 		// Check for input.
 		if(controlledWithArrow) {
-			if(Input.GetKeyDown(KeyCode.Return))
+			if(Input.GetKey(KeyCode.Return))
 				Dig();
 		} else {
-			if(Input.GetKeyDown(KeyCode.Space))
+			if(Input.GetKey(KeyCode.Space))
 				Dig();
 		}
 	}
@@ -46,6 +46,10 @@ public class CharacterDigging : MonoBehaviour {
 		
 		// If we already dug this up, ignore digging.
 		if(gridManager.GetTileByPosition(gridToDig).GetDugUp())
+			return;
+		
+		// If there's a mole, ignore digging.
+		if(!gridManager.GetTileByPosition(gridToDig).CanDig())
 			return;
 		
 		StartCoroutine(DigAHole(gridToDig));

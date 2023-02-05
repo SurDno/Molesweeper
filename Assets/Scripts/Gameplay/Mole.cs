@@ -20,6 +20,7 @@ public class Mole : MonoBehaviour {
 	
 	[Header("Current Values")]
     Vector2Int currentPos;
+	private bool outside;
 	private bool moving;
 	
     void Start() {
@@ -38,6 +39,7 @@ public class Mole : MonoBehaviour {
 		while(true) {
 			yield return new WaitForSeconds(timeBeforePopup);
 			
+			outside = true;
 			animator.SetBool("pop", true);
 			audioSource.clip = molePoppingOut;
 			audioSource.Play();
@@ -60,6 +62,7 @@ public class Mole : MonoBehaviour {
 			
 			moving = true;
 			animator.SetBool("disappear", false);
+			outside = false;
 			
 			yield return new WaitForSeconds(movingTime);
 			
@@ -86,5 +89,13 @@ public class Mole : MonoBehaviour {
 		
 		currentPos = possiblePos;
 		transform.position = PixelConversion.ConvertPixelPositionToWorldPosition((Vector2)currentPos * topGridManager.GetDistance());
+	}
+	
+	public bool GetOutside() {
+		return outside;
+	}
+	
+	public Vector2Int GetCurrentPos() {
+		return currentPos;
 	}
 }

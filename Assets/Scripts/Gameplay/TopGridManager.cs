@@ -25,6 +25,7 @@ public class TopGridManager : MonoBehaviour {
                 GameObject tile = Instantiate(tilePrefab, position, Quaternion.identity);
 				tile.GetComponent<SpriteRenderer>().flipX = Random.Range(0, 1f) > 0.5f;
 				tile.GetComponent<SpriteRenderer>().flipY = Random.Range(0, 1f) > 0.5f;
+				tile.GetComponent<Tile>().SetMyPos(new Vector2Int(i, j));
 				tiles[i, j] = tile.GetComponent<Tile>();
             }
 			

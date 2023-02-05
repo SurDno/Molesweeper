@@ -26,22 +26,22 @@ public class CharacterMovement : MonoBehaviour {
     void FixedUpdate() {
 		// Check for input.
 		if(controlledWithArrow) {
-			if(Input.GetKeyDown(KeyCode.UpArrow))
+			if(Input.GetKey(KeyCode.UpArrow))
 				Move(Direction.Up);
-			else if(Input.GetKeyDown(KeyCode.LeftArrow))
+			else if(Input.GetKey(KeyCode.LeftArrow))
 				Move(Direction.Left);
-			else if(Input.GetKeyDown(KeyCode.DownArrow))
+			else if(Input.GetKey(KeyCode.DownArrow))
 				Move(Direction.Down);
-			else if(Input.GetKeyDown(KeyCode.RightArrow))
+			else if(Input.GetKey(KeyCode.RightArrow))
 				Move(Direction.Right);
 		} else {
-			if(Input.GetKeyDown(KeyCode.W))
+			if(Input.GetKey(KeyCode.W))
 				Move(Direction.Up);
-			else if(Input.GetKeyDown(KeyCode.A))
+			else if(Input.GetKey(KeyCode.A))
 				Move(Direction.Left);
-			else if(Input.GetKeyDown(KeyCode.S))
+			else if(Input.GetKey(KeyCode.S))
 				Move(Direction.Down);
-			else if(Input.GetKeyDown(KeyCode.D))
+			else if(Input.GetKey(KeyCode.D))
 				Move(Direction.Right);
 		}
     }
@@ -84,7 +84,7 @@ public class CharacterMovement : MonoBehaviour {
 				break;
 		}
 		
-		StartCoroutine(LerpPos(currentGridPosition, currentGridPosition + Vector2Int.RoundToInt(increment)));
+		StartCoroutine(LerpPos(currentGridPosition, currentGridPosition + Vector2Int.RoundToInt(increment), 0.16f));
 	}
 	
 	private void FaceNewDirection(Direction newFacingDirection) {
@@ -93,7 +93,7 @@ public class CharacterMovement : MonoBehaviour {
 		
 	}
 	
-	IEnumerator LerpPos(Vector2Int initialPos, Vector2Int newPos) {
+	public IEnumerator LerpPos(Vector2Int initialPos, Vector2Int newPos, float percentageIncrease) {
 		moving = true;
 		
 		float percentage = 0;
@@ -105,13 +105,17 @@ public class CharacterMovement : MonoBehaviour {
 			tempPos = PixelConversion.SnapWorldPositionToPixelGrid(tempPos);
 			transform.position = tempPos;
 			
-			percentage += 0.16f;
+			percentage += percentageIncrease;
 			yield return new WaitForSeconds(0.01f);
 		}
 		
 		currentGridPosition = newPos;
 		
 		moving = false;
+	}
+	
+	public Vector2Int GetCurrentGrid() {
+		return currentGridPosition;
 	}
 	
 	public Vector2Int GetFacingGrid() {
@@ -136,6 +140,10 @@ public class CharacterMovement : MonoBehaviour {
 	
 	public bool GetMovingValue() {
 		return moving;
+	}
+	
+	public int GetFacingDirectionAsInt() {
+		return (int)facingDirection;
 	}
 	
 }
