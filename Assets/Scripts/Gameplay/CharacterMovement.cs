@@ -23,25 +23,25 @@ public class CharacterMovement : MonoBehaviour {
 		characterDigging = GetComponent<CharacterDigging>();
 	}
 	
-    void FixedUpdate() {
+    void Update() {
 		// Check for input.
 		if(controlledWithArrow) {
-			if(Input.GetKey(KeyCode.UpArrow))
+			if(Input.GetKeyDown(KeyCode.UpArrow))
 				Move(Direction.Up);
-			else if(Input.GetKey(KeyCode.LeftArrow))
+			else if(Input.GetKeyDown(KeyCode.LeftArrow))
 				Move(Direction.Left);
-			else if(Input.GetKey(KeyCode.DownArrow))
+			else if(Input.GetKeyDown(KeyCode.DownArrow))
 				Move(Direction.Down);
-			else if(Input.GetKey(KeyCode.RightArrow))
+			else if(Input.GetKeyDown(KeyCode.RightArrow))
 				Move(Direction.Right);
 		} else {
-			if(Input.GetKey(KeyCode.W))
+			if(Input.GetKeyDown(KeyCode.W))
 				Move(Direction.Up);
-			else if(Input.GetKey(KeyCode.A))
+			else if(Input.GetKeyDown(KeyCode.A))
 				Move(Direction.Left);
-			else if(Input.GetKey(KeyCode.S))
+			else if(Input.GetKeyDown(KeyCode.S))
 				Move(Direction.Down);
-			else if(Input.GetKey(KeyCode.D))
+			else if(Input.GetKeyDown(KeyCode.D))
 				Move(Direction.Right);
 		}
     }
@@ -84,7 +84,7 @@ public class CharacterMovement : MonoBehaviour {
 				break;
 		}
 		
-		StartCoroutine(LerpPos(currentGridPosition, currentGridPosition + Vector2Int.RoundToInt(increment), 0.16f));
+		StartCoroutine(LerpPos(currentGridPosition, currentGridPosition + Vector2Int.RoundToInt(increment), 0.08f));
 	}
 	
 	private void FaceNewDirection(Direction newFacingDirection) {

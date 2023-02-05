@@ -20,8 +20,8 @@ public class Potato : MonoBehaviour
         {
             for(int j=1;j>-2;j--)
             {
-                Instantiate(digUpPrefab, new Vector2(this.gameObject.transform.position.x + i, this.gameObject.transform.position.y + j), Quaternion.identity);
-                topGridManager.GetTileByPosition(this.gameObject.transform.position.x + i, this.gameObject.transform.position.y + j).SetDugup();
+               // Instantiate(digUpPrefab, new Vector2(this.gameObject.transform.position.x + i, this.gameObject.transform.position.y + j), Quaternion.identity);
+               // topGridManager.GetTileByPosition(this.gameObject.transform.position.x + i, this.gameObject.transform.position.y + j).SetDugup();
             }
         }
     }

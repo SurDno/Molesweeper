@@ -36,21 +36,19 @@ public class CharacterDigging : MonoBehaviour {
 		StartCoroutine(PlayDigSoundWhileDigging());
 	}
 	
-	void FixedUpdate() {
-		Debug.Log(Vector3.Distance(mole.gameObject.transform.position, this.gameObject.transform.position));
-		
+	void Update() {
 		// Check for input.
 		if(controlledWithArrow) {
-			if(Input.GetKey(KeyCode.Return))
+			if(Input.GetKeyDown(KeyCode.Return))
 				Dig();
-			if(diggingCoroutine != null && Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) {
+			if(diggingCoroutine != null && Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D)) {
 				StopCoroutine(diggingCoroutine);
 				digging = false;
 			}
 		} else {
-			if(Input.GetKey(KeyCode.Space))
+			if(Input.GetKeyDown(KeyCode.Space))
 				Dig();
-			if(diggingCoroutine != null && Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.RightArrow)) {
+			if(diggingCoroutine != null && Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.RightArrow)) {
 				StopCoroutine(diggingCoroutine);
 				digging = false;
 			}
@@ -116,7 +114,7 @@ public class CharacterDigging : MonoBehaviour {
 	IEnumerator PlayDigSoundWhileDigging() {
 		while(true) {
 			if(digging) {
-				float dist = Vector3.Distance(mole.gameObject.transform.position, this.gameObject.transform.position);
+				float dist = Vector3.Distance(mole.gameObject.transform.position, gridManager.GetTileByPosition(characterMovement.GetFacingGrid()).gameObject.transform.position);
 				float newPitchValue = minPitchValue + (maxPitchValue - (maxPitchValue - minPitchValue) * (dist / 23f));
 				newPitchValue = Mathf.Clamp(newPitchValue, 0.5f, 2.0f);
 				audioMixer.SetFloat("pitch", newPitchValue);
