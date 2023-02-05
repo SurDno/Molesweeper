@@ -33,7 +33,7 @@ public class Beetroot : MonoBehaviour {
                 break;
         }
 		
-		characterMovement.StartCoroutine(characterMovement.LerpPos(characterMovement.GetCurrentGrid(), sentPlayerPosition, 0.05f));
+		characterMovement.StartCoroutine(characterMovement.LerpPos(characterMovement.GetCurrentGrid(), sentPlayerPosition, 0.01f));
 	}
 
 }
