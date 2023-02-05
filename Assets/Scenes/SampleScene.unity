@@ -322,8 +322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90ffe2d64bf7ba0419f0ebb4549730b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveDelay: 0.01
-  movingTime: 5
+  moveDelay: 0.5
   timeBeforePopup: 10
   molePoppingOut: {fileID: 8300000, guid: 91732f44b0d54d24e93bcb40513415a0, type: 3}
   waving: {fileID: 8300000, guid: 2df661fac374bf444b18e7060443729f, type: 3}
@@ -616,7 +615,7 @@ MonoBehaviour:
     type: 3}
   audioMixer: {fileID: 24100000, guid: 1631d1d1bc24e47499b04f01fe462f5b, type: 2}
   controlledWithArrow: 1
-  timeToDig: 0.7
+  timeToDig: 1.5
   diggingSound: {fileID: 8300000, guid: 4d8f91bf3572c744f805f49b79b37b29, type: 3}
   diggingError: {fileID: 8300000, guid: 7726a1219e0721e4a90c051dd8e7dca2, type: 3}
   minPitchValue: -1
@@ -796,7 +795,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1601306966}
-  m_LocalRotation: {x: 0, y: 0, z: 1, w: -0.00000004371139}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_Children: []
@@ -833,7 +832,7 @@ MonoBehaviour:
     type: 3}
   audioMixer: {fileID: 24100000, guid: 7e121821b8dda254aba265c596526259, type: 2}
   controlledWithArrow: 0
-  timeToDig: 0.7
+  timeToDig: 1.5
   diggingSound: {fileID: 8300000, guid: 4d8f91bf3572c744f805f49b79b37b29, type: 3}
   diggingError: {fileID: 8300000, guid: 7726a1219e0721e4a90c051dd8e7dca2, type: 3}
   minPitchValue: -0.5
