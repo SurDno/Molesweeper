@@ -121,36 +121,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &65196581
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 65196582}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &65196582
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 65196581}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 0}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -382,7 +352,6 @@ GameObject:
   - component: {fileID: 945574076}
   - component: {fileID: 945574077}
   - component: {fileID: 945574075}
-  - component: {fileID: 945574078}
   m_Layer: 0
   m_Name: Mole
   m_TagString: Untagged
@@ -429,7 +398,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: c13acdeb2d6598c45aab3389bfb0b05c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 811a82fa80b8e0c438e65a7f598f6dc8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -466,7 +435,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90ffe2d64bf7ba0419f0ebb4549730b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveDelay: 0.5
   timeBeforePopup: 10
   molePoppingOut: {fileID: 8300000, guid: 91732f44b0d54d24e93bcb40513415a0, type: 3}
   waving: {fileID: 8300000, guid: 2df661fac374bf444b18e7060443729f, type: 3}
@@ -586,18 +554,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &945574078
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 945574072}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bde349ba4e5b60a489149fde5a39cbb7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1073600237
 GameObject:
   m_ObjectHideFlags: 0
@@ -757,13 +713,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   digUpPrefab: {fileID: 7079824485616320051, guid: 2c42ed5380a13c14f8aaadeebe4ed57e,
     type: 3}
+  potatoPrefab: {fileID: 0}
+  beetrootPrefab: {fileID: 2007452545490632169, guid: 4ca6ef2f001e1e342a6a3ffcdd67e2f8,
+    type: 3}
   audioMixer: {fileID: 24100000, guid: 1631d1d1bc24e47499b04f01fe462f5b, type: 2}
   controlledWithArrow: 1
   timeToDig: 1.5
   diggingSound: {fileID: 8300000, guid: 4d8f91bf3572c744f805f49b79b37b29, type: 3}
   diggingError: {fileID: 8300000, guid: 7726a1219e0721e4a90c051dd8e7dca2, type: 3}
-  minPitchValue: -1
-  maxPitchValue: 3
+  minPitchValue: -3
+  maxPitchValue: 5
   digging: 0
 --- !u!82 &1497786968
 AudioSource:
@@ -974,13 +933,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   digUpPrefab: {fileID: 7079824485616320051, guid: 2c42ed5380a13c14f8aaadeebe4ed57e,
     type: 3}
+  potatoPrefab: {fileID: 0}
+  beetrootPrefab: {fileID: 2007452545490632169, guid: 4ca6ef2f001e1e342a6a3ffcdd67e2f8,
+    type: 3}
   audioMixer: {fileID: 24100000, guid: 7e121821b8dda254aba265c596526259, type: 2}
   controlledWithArrow: 0
   timeToDig: 1.5
   diggingSound: {fileID: 8300000, guid: 4d8f91bf3572c744f805f49b79b37b29, type: 3}
   diggingError: {fileID: 8300000, guid: 7726a1219e0721e4a90c051dd8e7dca2, type: 3}
-  minPitchValue: -0.5
-  maxPitchValue: 2.5
+  minPitchValue: -3
+  maxPitchValue: 5
   digging: 0
 --- !u!82 &1601306971
 AudioSource:
