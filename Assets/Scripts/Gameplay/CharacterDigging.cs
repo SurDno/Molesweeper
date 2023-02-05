@@ -5,6 +5,8 @@ using System.Collections;
 public class CharacterDigging : MonoBehaviour {
 	[Header("Prefabs and External Objects")]
 	[SerializeField] private GameObject digUpPrefab;
+	[SerializeField] private GameObject potatoPrefab;
+	[SerializeField] private GameObject beetrootPrefab;
 	[SerializeField] private AudioMixer audioMixer;
 	private CharacterMovement characterMovement;
 	private TopGridManager gridManager;
@@ -107,12 +109,38 @@ public class CharacterDigging : MonoBehaviour {
 		yield return new WaitForSeconds(timeToDig);
 		
 		digging = false;
+		diggingCoroutine = null;
 		
-		if(gridManager.GetTileByPosition(gridToDig).IsMoleHidden())
+		// If we already dug this up, ignore digging.
+		if(gridManager.GetTileByPosition(gridToDig).GetDugUp())
+			yield break;
+		
+		// If there's a mole, ignore digging.
+		if(!gridManager.GetTileByPosition(gridToDig).IsMoleShowing())	
+			yield break;
+		
+		if(gridManager.GetTileByPosition(gridToDig).IsMoleHidden()) {
 			Debug.Log(this.gameObject.name + " won!");
+			// Mole appears, game is won. GG!
+		} else {
+			int rootProb = Random.Range(1, 100);
+			GameObject prefabToSpawn = new GameObject();
+			bool spawn = false;
+			
+			prefabToSpawn = beetrootPrefab;
+			spawn = true; 
+			
+			if(spawn) {
+				GameObject newObj = Instantiate(prefabToSpawn, PixelConversion.ConvertPixelPositionToWorldPosition((Vector2)gridToDig * gridManager.GetDistance()), Quaternion.identity);
+				if(newObj.GetComponent<Beetroot>()) {
+					newObj.GetComponent<Beetroot>().characterMovement = characterMovement;
+					newObj.transform.rotation = Quaternion.Euler(0, 0, characterMovement.GetFacingDirectionAsInt() * 90 - 180);
+				}
+			}
+		}
+		
 		Instantiate(digUpPrefab, PixelConversion.ConvertPixelPositionToWorldPosition((Vector2)gridToDig * gridManager.GetDistance()), Quaternion.identity);
 		gridManager.GetTileByPosition(gridToDig).SetDugUp(true);
-		diggingCoroutine = null;
 	}
 	
 	IEnumerator PlayDigSoundWhileDigging() {

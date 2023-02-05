@@ -9,7 +9,6 @@ public class Mole : MonoBehaviour {
 	AudioSource audioSource;
 	
 	[Header("Settings")]
-	[SerializeField]private float moveDelay = 0.05f;
 	[SerializeField]private float timeBeforePopup = 10f;
 	
 	[Header("Audio")]
