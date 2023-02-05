@@ -115,7 +115,7 @@ public class CharacterDigging : MonoBehaviour {
 	
 	IEnumerator PlayDigSoundWhileDigging() {
 		while(true) {
-			if(digging) {
+			if(digging && !audioSource.isPlaying) {
 				float dist = Vector3.Distance(mole.gameObject.transform.position, gridManager.GetTileByPosition(characterMovement.GetFacingGrid()).gameObject.transform.position);
 				float newPitchValue = minPitchValue + (maxPitchValue - (maxPitchValue - minPitchValue) * (dist / 23f));
 				newPitchValue = Mathf.Clamp(newPitchValue, 0.5f, 2.0f);

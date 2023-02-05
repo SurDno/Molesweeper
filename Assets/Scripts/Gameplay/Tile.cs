@@ -20,6 +20,10 @@ public class Tile : MonoBehaviour {
 		return true;
 	}
 	
+	public bool IsMoleHidden() {
+		return mole.GetCurrentPos() == myPos;
+	}
+	
 	public void SetDugUp(bool newDugUp) {
 		dugUp = newDugUp;
 	}
