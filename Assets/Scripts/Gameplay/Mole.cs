@@ -10,7 +10,6 @@ public class Mole : MonoBehaviour {
 	
 	[Header("Settings")]
 	[SerializeField]private float moveDelay = 0.05f;
-	[SerializeField]private float movingTime = 2f;
 	[SerializeField]private float timeBeforePopup = 10f;
 	
 	[Header("Audio")]
@@ -21,7 +20,6 @@ public class Mole : MonoBehaviour {
 	[Header("Current Values")]
     Vector2Int currentPos;
 	private bool outside;
-	private bool moving;
 	
     void Start() {
 		topGridManager = GameObject.Find("Tile Generator").GetComponent<TopGridManager>();
@@ -32,7 +30,6 @@ public class Mole : MonoBehaviour {
 		transform.position = PixelConversion.ConvertPixelPositionToWorldPosition((Vector2)currentPos * topGridManager.GetDistance());
 		
 		StartCoroutine(Stop());
-		StartCoroutine(Move());
     }
 	
 	IEnumerator Stop() {
@@ -58,37 +55,76 @@ public class Mole : MonoBehaviour {
 			
 			yield return new WaitForSeconds(moleLeaving.length);
 			
-			moving = true;
 			animator.SetBool("disappear", false);
 			outside = false;
-			
-			yield return new WaitForSeconds(movingTime);
-			
-			moving = false;
+			TryMove();
 			
 			yield return new WaitForSeconds(timeBeforePopup);
 		}
 	}
-	
-	IEnumerator Move() {
-		while(true) { 
-			yield return new WaitForSeconds(moveDelay);
-			if(moving)
-				TryMove();
-		}
-	}
 
-    void TryMove() {
-		Vector2Int possiblePos = currentPos + new Vector2Int(Random.Range(-1, 2), Random.Range(-1, 2));
-		
-		if(possiblePos.x < 0 || possiblePos.y < 0 || possiblePos.x >= topGridManager.GetGridSize().x || possiblePos.y >= topGridManager.GetGridSize().y)
+	void TryMove() {
+		//Before starting pathfinding, check if there the mole is trapped.
+		if(topGridManager.GetTileByPosition(currentPos + new Vector2Int(0, 1)).GetDugUp() &&
+		topGridManager.GetTileByPosition(currentPos + new Vector2Int(1, 0)).GetDugUp() &&
+		topGridManager.GetTileByPosition(currentPos + new Vector2Int(0, -1)).GetDugUp() &&
+		topGridManager.GetTileByPosition(currentPos + new Vector2Int(-1, 0)).GetDugUp())
 			return;
-		
-		if(topGridManager.GetTileByPosition(possiblePos).GetDugUp())
-			return;
-		
-		currentPos = possiblePos;
-		transform.position = PixelConversion.ConvertPixelPositionToWorldPosition((Vector2)currentPos * topGridManager.GetDistance());
+			
+		bool gridFound = false;
+		while(!gridFound) {
+			// Find a random accessible grid
+			List<Vector2Int> accessibleGrids = new List<Vector2Int>();
+			for (int x = 0; x < topGridManager.GetGridSize().x; x++) {
+				for (int y = 0; y < topGridManager.GetGridSize().y; y++) {
+					Vector2Int possiblePos = new Vector2Int(x, y);
+					if (!topGridManager.GetTileByPosition(possiblePos).GetDugUp()) {
+						accessibleGrids.Add(possiblePos);
+					}
+				}
+			}
+
+			if (accessibleGrids.Count == 0) {
+				return;
+			}
+
+			Vector2Int targetPos = accessibleGrids[Random.Range(0, accessibleGrids.Count)];
+
+			// Use A* pathfinding to check if there's a path to the target grid
+			Dictionary<Vector2Int, Vector2Int> cameFrom = new Dictionary<Vector2Int, Vector2Int>();
+			Queue<Vector2Int> frontier = new Queue<Vector2Int>();
+			cameFrom[currentPos] = currentPos;
+			frontier.Enqueue(currentPos);
+
+			while (frontier.Count > 0) {
+				Vector2Int current = frontier.Dequeue();
+				if (current == targetPos) {
+					break;
+				}
+
+				List<Vector2Int> neighbors = new List<Vector2Int> {
+					current + new Vector2Int(1, 0),
+					current + new Vector2Int(-1, 0),
+					current + new Vector2Int(0, 1),
+					current + new Vector2Int(0, -1)
+				};
+
+				foreach (Vector2Int next in neighbors) {
+					if (next.x >= 0 && next.y >= 0 && next.x < topGridManager.GetGridSize().x && next.y < topGridManager.GetGridSize().y &&
+						!cameFrom.ContainsKey(next) && !topGridManager.GetTileByPosition(next).GetDugUp()) {
+						cameFrom[next] = current;
+						frontier.Enqueue(next);
+					}
+				}
+			}
+
+			// If a path is found, teleport the mole to the target grid
+			if (cameFrom.ContainsKey(targetPos)) {
+				gridFound = true;
+				currentPos = targetPos;
+				transform.position = PixelConversion.ConvertPixelPositionToWorldPosition((Vector2)currentPos * topGridManager.GetDistance());
+			}
+		}
 	}
 	
 	public bool GetOutside() {

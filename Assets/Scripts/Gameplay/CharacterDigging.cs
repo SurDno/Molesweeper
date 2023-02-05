@@ -40,16 +40,18 @@ public class CharacterDigging : MonoBehaviour {
 		// Check for input.
 		if(controlledWithArrow) {
 			if(Input.GetKeyDown(KeyCode.Return))
-				Dig();
-			if(diggingCoroutine != null && Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D)) {
-				StopCoroutine(diggingCoroutine);
+				Dig();			
+			if(diggingCoroutine != null && (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.RightArrow))) {
+				StopAllCoroutines();
+				StartCoroutine(PlayDigSoundWhileDigging());
 				digging = false;
 			}
 		} else {
 			if(Input.GetKeyDown(KeyCode.Space))
 				Dig();
-			if(diggingCoroutine != null && Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.RightArrow)) {
-				StopCoroutine(diggingCoroutine);
+			if(diggingCoroutine != null && (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))) {
+				StopAllCoroutines();
+				StartCoroutine(PlayDigSoundWhileDigging());
 				digging = false;
 			}
 		}
