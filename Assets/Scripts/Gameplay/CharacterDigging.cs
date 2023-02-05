@@ -1,32 +1,59 @@
 ﻿using UnityEngine;
+using UnityEngine.Audio;
 using System.Collections;
 
 public class CharacterDigging : MonoBehaviour {
 	[Header("Prefabs and External Objects")]
 	[SerializeField] private GameObject digUpPrefab;
+	[SerializeField] private AudioMixer audioMixer;
 	private CharacterMovement characterMovement;
 	private TopGridManager gridManager;
+	private Mole mole;
+	
+	AudioSource audioSource;
 	
 	[Header("Settings")]
 	[SerializeField] private bool controlledWithArrow;
 	[SerializeField] private float timeToDig;
 	
+	[Header("Audio")]
+	[SerializeField] private AudioClip diggingSound;
+	[SerializeField] private AudioClip diggingError;
+	[SerializeField] private float minPitchValue = 0.5f;
+	[SerializeField] private float maxPitchValue = 2.0f;
+	
 	[Header("Current Values")]
 	[SerializeField] private bool digging;
+	private Coroutine diggingCoroutine;
 	
 	void Start() {
 		characterMovement = GetComponent<CharacterMovement>();
 		gridManager = GameObject.Find("Tile Generator").GetComponent<TopGridManager>();
+		audioSource = GetComponent<AudioSource>();
+		mole = GameObject.Find("Mole").GetComponent<Mole>();
+		
+		
+		StartCoroutine(PlayDigSoundWhileDigging());
 	}
 	
 	void FixedUpdate() {
+		Debug.Log(Vector3.Distance(mole.gameObject.transform.position, this.gameObject.transform.position));
+		
 		// Check for input.
 		if(controlledWithArrow) {
 			if(Input.GetKey(KeyCode.Return))
 				Dig();
+			if(diggingCoroutine != null && Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) {
+				StopCoroutine(diggingCoroutine);
+				digging = false;
+			}
 		} else {
 			if(Input.GetKey(KeyCode.Space))
 				Dig();
+			if(diggingCoroutine != null && Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.RightArrow)) {
+				StopCoroutine(diggingCoroutine);
+				digging = false;
+			}
 		}
 	}
 	
@@ -37,22 +64,41 @@ public class CharacterDigging : MonoBehaviour {
 		if((gridToDig.x >= gridManager.GetGridSize().x)
 			|| (gridToDig.y >= gridManager.GetGridSize().y)
 			|| (gridToDig.x < 0)
-			|| (gridToDig.y < 0))
+			|| (gridToDig.y < 0)) {
+			if(!audioSource.isPlaying) {
+				audioMixer.SetFloat("pitch", 1.0f);
+				audioSource.clip = diggingError;
+				audioSource.Play();
+			}
 			return;
-			
+		}
+		
 		// If we're moving, we can't dig.
-		if(characterMovement.GetMovingValue())
+		if(characterMovement.GetMovingValue()) {
 			return;
+		}
 		
 		// If we already dug this up, ignore digging.
-		if(gridManager.GetTileByPosition(gridToDig).GetDugUp())
+		if(gridManager.GetTileByPosition(gridToDig).GetDugUp()) {	
+			if(!audioSource.isPlaying) {
+				audioMixer.SetFloat("pitch", 1.0f);
+				audioSource.clip = diggingError;
+				audioSource.Play();
+			}
 			return;
+		}
 		
 		// If there's a mole, ignore digging.
-		if(!gridManager.GetTileByPosition(gridToDig).CanDig())
-			return;
+		if(!gridManager.GetTileByPosition(gridToDig).IsMoleShowing()) {		
+			if(!audioSource.isPlaying) {
+				audioMixer.SetFloat("pitch", 1.0f);
+				audioSource.clip = diggingError;
+				audioSource.Play();
+			}
+			return;	
+		}
 		
-		StartCoroutine(DigAHole(gridToDig));
+		diggingCoroutine = StartCoroutine(DigAHole(gridToDig));
 	}
 	
 	IEnumerator DigAHole(Vector2Int gridToDig) {
@@ -64,6 +110,22 @@ public class CharacterDigging : MonoBehaviour {
 		
 		Instantiate(digUpPrefab, PixelConversion.ConvertPixelPositionToWorldPosition((Vector2)gridToDig * gridManager.GetDistance()), Quaternion.identity);
 		gridManager.GetTileByPosition(gridToDig).SetDugUp(true);
+		diggingCoroutine = null;
+	}
+	
+	IEnumerator PlayDigSoundWhileDigging() {
+		while(true) {
+			if(digging) {
+				float dist = Vector3.Distance(mole.gameObject.transform.position, this.gameObject.transform.position);
+				float newPitchValue = minPitchValue + (maxPitchValue - (maxPitchValue - minPitchValue) * (dist / 23f));
+				newPitchValue = Mathf.Clamp(newPitchValue, 0.5f, 2.0f);
+				audioMixer.SetFloat("pitch", newPitchValue);
+				audioSource.clip = diggingSound;
+				audioSource.Play();
+				yield return new WaitForSeconds(diggingSound.length);
+			}
+			yield return new WaitForSeconds(0.01f);
+		}
 	}
 	
 	public bool GetDigging() {

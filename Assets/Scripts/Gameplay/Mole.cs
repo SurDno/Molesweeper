@@ -37,8 +37,6 @@ public class Mole : MonoBehaviour {
 	
 	IEnumerator Stop() {
 		while(true) {
-			yield return new WaitForSeconds(timeBeforePopup);
-			
 			outside = true;
 			animator.SetBool("pop", true);
 			audioSource.clip = molePoppingOut;
@@ -67,6 +65,8 @@ public class Mole : MonoBehaviour {
 			yield return new WaitForSeconds(movingTime);
 			
 			moving = false;
+			
+			yield return new WaitForSeconds(timeBeforePopup);
 		}
 	}
 	
