@@ -40,7 +40,7 @@ public class CharacterDigging : MonoBehaviour {
 		// Check for input.
 		if(controlledWithArrow) {
 			if(Input.GetKeyDown(KeyCode.Return))
-				Dig();			
+				Dig();
 			if(diggingCoroutine != null && (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.RightArrow))) {
 				StopAllCoroutines();
 				StartCoroutine(PlayDigSoundWhileDigging());
@@ -108,6 +108,8 @@ public class CharacterDigging : MonoBehaviour {
 		
 		digging = false;
 		
+		if(gridManager.GetTileByPosition(gridToDig).IsMoleHidden())
+			Debug.Log(this.gameObject.name + " won!");
 		Instantiate(digUpPrefab, PixelConversion.ConvertPixelPositionToWorldPosition((Vector2)gridToDig * gridManager.GetDistance()), Quaternion.identity);
 		gridManager.GetTileByPosition(gridToDig).SetDugUp(true);
 		diggingCoroutine = null;
