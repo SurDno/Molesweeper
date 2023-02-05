@@ -16,6 +16,7 @@ public class CharacterMovement : MonoBehaviour {
 	private Vector2Int currentGridPosition;
 	private Direction facingDirection;
 	private bool moving;
+	private bool beatrootAttack;
 	
 	void Start() {
 		currentGridPosition = startGridPosition;
@@ -49,6 +50,10 @@ public class CharacterMovement : MonoBehaviour {
 	private void Move(Direction newMovementDirection) {
 		// Ignore all other movement commands if we're already moving.
 		if(moving)
+			return;
+		
+		// Ignore all other movement commands if beatroot attacks.
+		if(beatrootAttack)
 			return;
 		
 		// If we're trying to move while digging, don't move.
@@ -144,6 +149,10 @@ public class CharacterMovement : MonoBehaviour {
 	
 	public int GetFacingDirectionAsInt() {
 		return (int)facingDirection;
+	}
+	
+	public void SetBeatrootAttack(bool newValue) {
+		beatrootAttack = newValue;
 	}
 	
 }

@@ -120,21 +120,31 @@ public class CharacterDigging : MonoBehaviour {
 			yield break;
 		
 		if(gridManager.GetTileByPosition(gridToDig).IsMoleHidden()) {
-			Debug.Log(this.gameObject.name + " won!");
-			// Mole appears, game is won. GG!
+			if(!controlledWithArrow)
+				Application.LoadLevel("EndScreenP1");
+			else
+				Application.LoadLevel("EndScreenP2");
 		} else {
 			int rootProb = Random.Range(1, 100);
 			GameObject prefabToSpawn = new GameObject();
 			bool spawn = false;
 			
-			prefabToSpawn = beetrootPrefab;
-			spawn = true; 
+			if(rootProb > 80) {
+				prefabToSpawn = beetrootPrefab;
+				spawn = true; 
+			} else if (rootProb > 50){
+				prefabToSpawn = potatoPrefab;
+				spawn = true;
+			}
 			
 			if(spawn) {
 				GameObject newObj = Instantiate(prefabToSpawn, PixelConversion.ConvertPixelPositionToWorldPosition((Vector2)gridToDig * gridManager.GetDistance()), Quaternion.identity);
 				if(newObj.GetComponent<Beetroot>()) {
 					newObj.GetComponent<Beetroot>().characterMovement = characterMovement;
 					newObj.transform.rotation = Quaternion.Euler(0, 0, characterMovement.GetFacingDirectionAsInt() * 90 - 180);
+				} else if (newObj.GetComponent<Potato>()) {
+					newObj.GetComponent<Potato>().spawnedByPlayerOne = !controlledWithArrow;
+					newObj.GetComponent<Potato>().thisGrid = gridToDig;
 				}
 			}
 		}

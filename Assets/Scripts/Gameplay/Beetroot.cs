@@ -24,6 +24,9 @@ public class Beetroot : MonoBehaviour {
     }
 	
 	IEnumerator Punch() {
+		yield return new WaitForSeconds(0.01f);
+		
+		characterMovement.SetBeatrootAttack(true);
 		audioSource.clip = beatrootAppear;
 		audioSource.Play();
 		
@@ -53,6 +56,7 @@ public class Beetroot : MonoBehaviour {
         }
 		
 		characterMovement.StartCoroutine(characterMovement.LerpPos(characterMovement.GetCurrentGrid(), sentPlayerPosition, 0.01f));
+		characterMovement.SetBeatrootAttack(false);
 		
 		yield return new WaitForSeconds(1f);
 		

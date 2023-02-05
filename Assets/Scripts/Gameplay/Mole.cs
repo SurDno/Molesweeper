@@ -109,7 +109,7 @@ public class Mole : MonoBehaviour {
 				};
 
 				foreach (Vector2Int next in neighbors) {
-					if (next.x >= 0 && next.y >= 0 && next.x < topGridManager.GetGridSize().x && next.y < topGridManager.GetGridSize().y &&
+					if (next.x >= 0 && next.y >= 0 && next.x + 1< topGridManager.GetGridSize().x && next.y + 1 < topGridManager.GetGridSize().y &&
 						!cameFrom.ContainsKey(next) && !topGridManager.GetTileByPosition(next).GetDugUp()) {
 						cameFrom[next] = current;
 						frontier.Enqueue(next);

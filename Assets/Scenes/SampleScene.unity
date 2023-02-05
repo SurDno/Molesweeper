@@ -713,12 +713,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   digUpPrefab: {fileID: 7079824485616320051, guid: 2c42ed5380a13c14f8aaadeebe4ed57e,
     type: 3}
-  potatoPrefab: {fileID: 0}
+  potatoPrefab: {fileID: 50385112493307957, guid: 76709b4ce80bf9348acc9acd1357e986,
+    type: 3}
   beetrootPrefab: {fileID: 2007452545490632169, guid: 4ca6ef2f001e1e342a6a3ffcdd67e2f8,
     type: 3}
   audioMixer: {fileID: 24100000, guid: 1631d1d1bc24e47499b04f01fe462f5b, type: 2}
   controlledWithArrow: 1
-  timeToDig: 1.5
+  timeToDig: 1
   diggingSound: {fileID: 8300000, guid: 4d8f91bf3572c744f805f49b79b37b29, type: 3}
   diggingError: {fileID: 8300000, guid: 7726a1219e0721e4a90c051dd8e7dca2, type: 3}
   minPitchValue: -3
@@ -933,12 +934,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   digUpPrefab: {fileID: 7079824485616320051, guid: 2c42ed5380a13c14f8aaadeebe4ed57e,
     type: 3}
-  potatoPrefab: {fileID: 0}
+  potatoPrefab: {fileID: 50385112493307957, guid: 76709b4ce80bf9348acc9acd1357e986,
+    type: 3}
   beetrootPrefab: {fileID: 2007452545490632169, guid: 4ca6ef2f001e1e342a6a3ffcdd67e2f8,
     type: 3}
   audioMixer: {fileID: 24100000, guid: 7e121821b8dda254aba265c596526259, type: 2}
   controlledWithArrow: 0
-  timeToDig: 1.5
+  timeToDig: 1
   diggingSound: {fileID: 8300000, guid: 4d8f91bf3572c744f805f49b79b37b29, type: 3}
   diggingError: {fileID: 8300000, guid: 7726a1219e0721e4a90c051dd8e7dca2, type: 3}
   minPitchValue: -3
