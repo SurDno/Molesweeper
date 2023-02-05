@@ -12,7 +12,7 @@ public class Tile : MonoBehaviour {
 		mole = GameObject.Find("Mole").GetComponent<Mole>();
 	}
 	
-	public bool CanDig() {
+	public bool IsMoleShowing() {
 		// Cant dig if there's a mole here showing itself.
 		if(mole.GetOutside() && mole.GetCurrentPos() == myPos)
 			return false;
